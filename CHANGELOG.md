@@ -12,5 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add project base structure.
+- Add Github automation workflows.
 
 [Unreleased]: https://github.com/giantswarm/REPOSITORY_NAME/tree/master
