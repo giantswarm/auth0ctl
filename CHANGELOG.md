@@ -13,5 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add project base structure.
 - Add Github automation workflows.
+- Add CircleCI configuration.
 
 [Unreleased]: https://github.com/giantswarm/REPOSITORY_NAME/tree/master
