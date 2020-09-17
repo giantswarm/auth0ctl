@@ -4,11 +4,12 @@ orbs:
   architect: giantswarm/architect@0.10.2
 
 workflows:
-  test:
+  go-build:
     jobs:
-      - architect/go-test:
-          name: go-test
+      - architect/go-build:
+          name: go-build-auth0ctl
+          binary: auth0ctl
+          # Needed to trigger job also on git tag.
           filters:
-            # Trigger job also on git tag.
             tags:
               only: /^v.*/
