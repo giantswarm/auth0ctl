@@ -58,7 +58,7 @@ func New(config Config) (*Auth0, error) {
 	}, nil
 }
 
-func getAccessToken(appID, appSecret, tenant string) (string, error) {
+func getAccessToken(clientID, clientSecret, tenant string) (string, error) {
 	httpClient := &http.Client{}
 
 	authEndpoint := fmt.Sprintf("https://%s.eu.auth0.com/oauth/token", tenant)
@@ -66,8 +66,8 @@ func getAccessToken(appID, appSecret, tenant string) (string, error) {
 	data := url.Values{}
 	data.Set("grant_type", "client_credentials")
 	data.Set("audience", fmt.Sprintf(managementAudience, tenant))
-	data.Set("client_id", appID)
-	data.Set("client_secret", appSecret)
+	data.Set("client_id", clientID)
+	data.Set("client_secret", clientSecret)
 
 	req, err := http.NewRequest("POST", authEndpoint, strings.NewReader(data.Encode()))
 	if err != nil {
