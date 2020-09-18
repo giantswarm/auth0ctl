@@ -1,9 +1,11 @@
-package client
+package login
 
 import (
 	"context"
+	"fmt"
 	"io"
 
+	"github.com/giantswarm/auth0ctl/pkg/auth0"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
@@ -33,5 +35,12 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 }
 
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
+	err := auth0.Login(r.flag.ClientID, r.flag.ClientSecret, r.flag.Tenant)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	fmt.Printf("Successfully logged into Auth0 tenant %#q\n", r.flag.Tenant)
+
 	return nil
 }

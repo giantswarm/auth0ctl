@@ -1,13 +1,8 @@
 package auth0
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
 
 	"github.com/giantswarm/microerror"
 )
@@ -43,7 +38,7 @@ func New(config Config) (*Auth0, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Tenant must not be empty", config)
 	}
 
-	accessToken, err := getAccessToken(config.ClientID, config.ClientSecret, config.Tenant)
+	accessToken, err := readTokenFromFile(config.Tenant)
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}
@@ -58,46 +53,6 @@ func New(config Config) (*Auth0, error) {
 	}, nil
 }
 
-func getAccessToken(clientID, clientSecret, tenant string) (string, error) {
-	httpClient := &http.Client{}
-
-	authEndpoint := fmt.Sprintf("https://%s.eu.auth0.com/oauth/token", tenant)
-
-	data := url.Values{}
-	data.Set("grant_type", "client_credentials")
-	data.Set("audience", fmt.Sprintf(managementAudience, tenant))
-	data.Set("client_id", clientID)
-	data.Set("client_secret", clientSecret)
-
-	req, err := http.NewRequest("POST", authEndpoint, strings.NewReader(data.Encode()))
-	if err != nil {
-		return "", microerror.Mask(err)
-	}
-
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
-
-	type auth0LoginResponse struct {
-		AccessToken string `json:"access_token"`
-	}
-
-	resp, err := httpClient.Do(req)
-	if err != nil {
-		return "", microerror.Mask(err)
-	}
-
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return "", microerror.Mask(err)
-	}
-
-	var auth0LoginData auth0LoginResponse
-
-	err = json.Unmarshal(body, &auth0LoginData)
-	if err != nil {
-		return "", microerror.Mask(err)
-	}
-
-	return auth0LoginData.AccessToken, nil
+func readTokenFromFile(tenant string) (string, error) {
+	return "", nil
 }
