@@ -1,4 +1,4 @@
-package client
+package update
 
 import (
 	"io"
@@ -7,11 +7,13 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
+
+	a0client "github.com/giantswarm/auth0ctl/cmd/update/client"
 )
 
 const (
-	name        = "client"
-	description = "Command to create Auth0 client."
+	name        = "update"
+	description = "Commands to update Auth0 resources."
 )
 
 type Config struct {
@@ -31,6 +33,22 @@ func New(config Config) (*cobra.Command, error) {
 		config.Stdout = os.Stdout
 	}
 
+	var err error
+
+	var clientCmd *cobra.Command
+	{
+		c := a0client.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		clientCmd, err = a0client.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	f := &flag{}
 
 	r := &runner{
@@ -48,6 +66,8 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	f.Init(c)
+
+	c.AddCommand(clientCmd)
 
 	return c, nil
 }

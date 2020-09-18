@@ -11,7 +11,7 @@ import (
 
 const (
 	name        = "client"
-	description = "Command to delete Auth0 client."
+	description = "Command to update Auth0 client."
 )
 
 type Config struct {

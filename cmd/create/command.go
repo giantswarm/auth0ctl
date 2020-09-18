@@ -8,7 +8,6 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	a0client "github.com/giantswarm/auth0ctl/cmd/create/client"
 	a0resourceserver "github.com/giantswarm/auth0ctl/cmd/create/resourceserver"
 )
 
@@ -35,20 +34,6 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	var err error
-
-	var clientCmd *cobra.Command
-	{
-		c := a0client.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		clientCmd, err = a0client.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
 
 	var resourceServerCmd *cobra.Command
 	{
@@ -82,7 +67,6 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(c)
 
-	c.AddCommand(clientCmd)
 	c.AddCommand(resourceServerCmd)
 
 	return c, nil

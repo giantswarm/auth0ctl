@@ -10,6 +10,7 @@ import (
 
 	"github.com/giantswarm/auth0ctl/cmd/create"
 	"github.com/giantswarm/auth0ctl/cmd/delete"
+	"github.com/giantswarm/auth0ctl/cmd/update"
 	"github.com/giantswarm/auth0ctl/cmd/version"
 	"github.com/giantswarm/auth0ctl/pkg/project"
 )
@@ -72,6 +73,20 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var updateCmd *cobra.Command
+	{
+		c := update.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		updateCmd, err = update.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	var versionCmd *cobra.Command
 	{
 		c := version.Config{
@@ -110,6 +125,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	c.AddCommand(createCmd)
 	c.AddCommand(deleteCmd)
+	c.AddCommand(updateCmd)
 	c.AddCommand(versionCmd)
 
 	return c, nil
