@@ -49,7 +49,6 @@ func (r *runner) run(_ context.Context, _ *cobra.Command, _ []string) error {
 			return microerror.Mask(err)
 		}
 	}
-
 	err = a0.DeleteResourceServer(r.flag.Identifier)
 	if err != nil {
 		return microerror.Mask(err)
