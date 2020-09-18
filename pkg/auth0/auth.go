@@ -11,8 +11,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/giantswarm/auth0ctl/internal/key"
 	"github.com/giantswarm/microerror"
+
+	"github.com/giantswarm/auth0ctl/internal/key"
 )
 
 func Login(clientID, clientSecret, tenant string) error {

@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/giantswarm/auth0ctl/pkg/auth0"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
+
+	"github.com/giantswarm/auth0ctl/pkg/auth0"
 )
 
 type runner struct {
