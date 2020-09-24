@@ -10,8 +10,9 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/giantswarm/auth0ctl/internal/key"
 	"github.com/giantswarm/microerror"
+
+	"github.com/giantswarm/auth0ctl/internal/key"
 )
 
 var (
