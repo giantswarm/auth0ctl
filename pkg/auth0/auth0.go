@@ -134,7 +134,7 @@ func (a0 *Auth0) DeleteResourceServer(identifier string) error {
 	}
 
 	if resp.StatusCode != 204 {
-		return microerror.Maskf(executionFailedError, "expected status code '204', got %#d", resp.StatusCode)
+		return microerror.Maskf(executionFailedError, "expected status code '204', got '%d'", resp.StatusCode)
 	}
 
 	return nil
