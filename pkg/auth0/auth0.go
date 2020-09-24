@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/giantswarm/auth0ctl/internal/key"
 	"github.com/giantswarm/microerror"
 
 	"github.com/giantswarm/auth0ctl/internal/key"
@@ -50,6 +51,11 @@ func New(config Config) (*Auth0, error) {
 	}
 
 	expiresAt, err := time.Parse(dateTimeFormat, tokenConfig.ExpiresAt)
+	if err != nil {
+		return nil, microerror.Mask(err)
+	}
+
+	now, err := time.Parse(dateTimeFormat, time.Now().Format(dateTimeFormat))
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}
