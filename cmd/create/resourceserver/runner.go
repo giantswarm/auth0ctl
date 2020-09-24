@@ -50,6 +50,15 @@ func (r *runner) run(_ context.Context, _ *cobra.Command, _ []string) error {
 		}
 	}
 
+	resourceServer := &auth0.ResouceServer{
+		Name:               r.flag.Name,
+		Identifier:         r.flag.Identifier,
+		AllowOfflineAccess: r.flag.AllowOfflineAccess,
+		TokenLifetime:      r.flag.TokenLifetime,
+		TokenLifetimeWeb:   r.flag.TokenLifetimeWeb,
+		SigningAlgorithm:   r.flag.SigningAlgorithm,
+	}
+
 	_, err = a0.CreateResourceServer(resourceServer)
 	if auth0.IsResourceExists(err) {
 		fmt.Printf("Resource server with %#q identifier already exists.\n", r.flag.Identifier)

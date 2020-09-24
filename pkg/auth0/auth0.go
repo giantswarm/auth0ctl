@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/giantswarm/auth0ctl/internal/key"
 	"github.com/giantswarm/microerror"
 
 	"github.com/giantswarm/auth0ctl/internal/key"
@@ -37,11 +38,21 @@ func New(config Config) (*Auth0, error) {
 
 	filePath := filepath.Join(key.ConfigDir(), config.Tenant)
 
+<<<<<<< HEAD
 	data, err := ioutil.ReadFile(filePath)
+=======
+	tokenConfig, err := readTokenConfigFromFileSystem(filePath)
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}
 
+	expiresAt, err := time.Parse(dateTimeFormat, tokenConfig.ExpiresAt)
+>>>>>>> 0156201... Verify token ttl durin auth0 client setup
+	if err != nil {
+		return nil, microerror.Mask(err)
+	}
+
+<<<<<<< HEAD
 	var tokenConfig *TokenConfig
 
 	err = json.Unmarshal(data, &tokenConfig)
@@ -54,6 +65,8 @@ func New(config Config) (*Auth0, error) {
 		return nil, microerror.Mask(err)
 	}
 
+=======
+>>>>>>> 0156201... Verify token ttl durin auth0 client setup
 	now, err := time.Parse(dateTimeFormat, time.Now().Format(dateTimeFormat))
 	if err != nil {
 		return nil, microerror.Mask(err)
