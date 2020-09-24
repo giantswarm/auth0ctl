@@ -21,9 +21,10 @@ const (
 	dateTimeFormat = "2006-01-02T15:04:05"
 )
 
-var (
-	tokenTTL = 5 * time.Minute
-)
+type ClientCredentials struct {
+	AccessToken string `json:"access_token"`
+	ExpiresIn   int16  `json:"expires_in"`
+}
 
 type TokenConfig struct {
 	ExpiresAt string `json:"expires_at"`
@@ -38,15 +39,16 @@ func Login(clientID, clientSecret, tenant string) error {
 
 	filePath := filepath.Join(key.ConfigDir(), tenant)
 
-	accessToken, err := getAccessToken(clientID, clientSecret, tenant)
+	clientCredentials, err := getAccessToken(clientID, clientSecret, tenant)
 	if err != nil {
 		return microerror.Mask(err)
 	}
+	ttl := time.Second * time.Duration(clientCredentials.ExpiresIn)
 
-	expiresAt := time.Now().Add(tokenTTL).Format(dateTimeFormat)
+	expiresAt := time.Now().Add(ttl).Format(dateTimeFormat)
 
 	tokenConfig := TokenConfig{
-		Token:     accessToken,
+		Token:     clientCredentials.AccessToken,
 		ExpiresAt: expiresAt,
 	}
 
@@ -91,7 +93,7 @@ func ensureConfigDirExists() error {
 	return nil
 }
 
-func getAccessToken(clientID, clientSecret, tenant string) (string, error) {
+func getAccessToken(clientID, clientSecret, tenant string) (*ClientCredentials, error) {
 	httpClient := &http.Client{}
 
 	authEndpoint := fmt.Sprintf("https://%s.eu.auth0.com/oauth/token", tenant)
@@ -104,35 +106,31 @@ func getAccessToken(clientID, clientSecret, tenant string) (string, error) {
 
 	req, err := http.NewRequest("POST", authEndpoint, strings.NewReader(data.Encode()))
 	if err != nil {
-		return "", microerror.Mask(err)
+		return nil, microerror.Mask(err)
 	}
 
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
 
-	type auth0LoginResponse struct {
-		AccessToken string `json:"access_token"`
-	}
-
 	resp, err := httpClient.Do(req)
 	if err != nil {
-		return "", microerror.Mask(err)
+		return nil, microerror.Mask(err)
 	}
 
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return "", microerror.Mask(err)
+		return nil, microerror.Mask(err)
 	}
 
-	var auth0LoginData auth0LoginResponse
+	var clientCredentials *ClientCredentials
 
-	err = json.Unmarshal(body, &auth0LoginData)
+	err = json.Unmarshal(body, &clientCredentials)
 	if err != nil {
-		return "", microerror.Mask(err)
+		return nil, microerror.Mask(err)
 	}
 
-	return auth0LoginData.AccessToken, nil
+	return clientCredentials, nil
 }
 
 func writeTokenConfigToFileSystem(tokenConfig []byte, filePath string) error {
