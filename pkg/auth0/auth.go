@@ -10,11 +10,25 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/giantswarm/microerror"
 
 	"github.com/giantswarm/auth0ctl/internal/key"
 )
+
+const (
+	dateTimeFormat = "2006-01-02T15:04:05"
+)
+
+var (
+	tokenTTL = 5 * time.Minute
+)
+
+type TokenConfig struct {
+	ExpiresAt string `json:"expires_at"`
+	Token     string `json:"token"`
+}
 
 func Login(clientID, clientSecret, tenant string) error {
 	err := ensureConfigDirExists()
@@ -22,14 +36,26 @@ func Login(clientID, clientSecret, tenant string) error {
 		return microerror.Mask(err)
 	}
 
+	filePath := filepath.Join(key.ConfigDir(), tenant)
+
 	accessToken, err := getAccessToken(clientID, clientSecret, tenant)
 	if err != nil {
 		return microerror.Mask(err)
 	}
 
-	filePath := filepath.Join(key.ConfigDir(), tenant)
+	expiresAt := time.Now().Add(tokenTTL).Format(dateTimeFormat)
 
-	err = writeTokenToFileSystem(accessToken, filePath)
+	tokenConfig := TokenConfig{
+		Token:     accessToken,
+		ExpiresAt: expiresAt,
+	}
+
+	data, err := json.Marshal(tokenConfig)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	err = writeTokenConfigToFileSystem(data, filePath)
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -109,8 +135,9 @@ func getAccessToken(clientID, clientSecret, tenant string) (string, error) {
 	return auth0LoginData.AccessToken, nil
 }
 
-func writeTokenToFileSystem(accessToken, filePath string) error {
-	err := ioutil.WriteFile(filePath, []byte(accessToken), 0600)
+func writeTokenConfigToFileSystem(tokenConfig []byte, filePath string) error {
+
+	err := ioutil.WriteFile(filePath, tokenConfig, 0600)
 	if err != nil {
 		return microerror.Mask(err)
 	}
