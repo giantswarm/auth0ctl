@@ -7,7 +7,10 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"path/filepath"
+	"time"
 
+	"github.com/giantswarm/auth0ctl/internal/key"
 	"github.com/giantswarm/microerror"
 )
 
@@ -31,15 +34,38 @@ func New(config Config) (*Auth0, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Tenant must not be empty", config)
 	}
 
-	accessToken, err := readTokenFromFile(config.Tenant)
+	filePath := filepath.Join(key.ConfigDir(), config.Tenant)
+
+	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return nil, microerror.Mask(err)
+	}
+
+	var tokenConfig *TokenConfig
+
+	err = json.Unmarshal(data, &tokenConfig)
+	if err != nil {
+		return nil, microerror.Mask(err)
+	}
+
+	expiresAt, err := time.Parse(dateTimeFormat, tokenConfig.ExpiresAt)
+	if err != nil {
+		return nil, microerror.Mask(err)
+	}
+
+	now, err := time.Parse(dateTimeFormat, time.Now().Format(dateTimeFormat))
+	if err != nil {
+		return nil, microerror.Mask(err)
+	}
+
+	if expiresAt.Before(now) {
+		return nil, microerror.Maskf(executionFailedError, "Access token expired. Execute `auth0ctl login` to get new token.")
 	}
 
 	httpClient := &http.Client{}
 
 	return &Auth0{
-		accessToken: accessToken,
+		accessToken: tokenConfig.Token,
 		audience:    fmt.Sprintf(managementAudience, config.Tenant),
 
 		httpClient: httpClient,

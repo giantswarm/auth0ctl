@@ -50,6 +50,8 @@ func (r *runner) run(_ context.Context, _ *cobra.Command, _ []string) error {
 		}
 	}
 
+	return nil
+
 	resourceServerExists, err := a0.ResourceServerExists(r.flag.Identifier)
 	if err != nil {
 		return microerror.Mask(err)
