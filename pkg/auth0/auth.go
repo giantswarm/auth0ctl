@@ -8,7 +8,6 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 	"time"
 
@@ -23,7 +22,7 @@ const (
 
 type ClientCredentials struct {
 	AccessToken string `json:"access_token"`
-	ExpiresIn   int16  `json:"expires_in"`
+	ExpiresIn   int    `json:"expires_in"`
 }
 
 type TokenConfig struct {
@@ -47,17 +46,17 @@ func Login(clientID, clientSecret, tenant string) error {
 
 	expiresAt := time.Now().Add(ttl).Format(dateTimeFormat)
 
-	tokenConfig := TokenConfig{
+	tokenConfig := &TokenConfig{
 		Token:     clientCredentials.AccessToken,
 		ExpiresAt: expiresAt,
 	}
 
-	tokenConfig, err := json.Marshal(tokenConfig)
+	tokenConfigData, err := json.Marshal(tokenConfig)
 	if err != nil {
 		return microerror.Mask(err)
 	}
 
-	err = ioutil.WriteFile(filePath, tokenConfig, 0600)
+	err = ioutil.WriteFile(filePath, tokenConfigData, 0600)
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -94,8 +93,6 @@ func ensureConfigDirExists() error {
 }
 
 func getAccessToken(clientID, clientSecret, tenant string) (*ClientCredentials, error) {
-	httpClient := &http.Client{}
-
 	authEndpoint := fmt.Sprintf("https://%s.eu.auth0.com/oauth/token", tenant)
 
 	data := url.Values{}
