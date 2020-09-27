@@ -7,20 +7,26 @@ import (
 )
 
 const (
-	flagName = "name"
+	flagID     = "id"
+	flagTenant = "tenant"
 )
 
 type flag struct {
-	Name string
+	ID     string
+	Tenant string
 }
 
 func (f *flag) Init(cmd *cobra.Command) {
-	cmd.Flags().StringVar(&f.Name, flagName, "", "New application name.")
+	cmd.Flags().StringVar(&f.ID, flagID, "", "ID of the client to update.")
+	cmd.Flags().StringVar(&f.Tenant, flagTenant, "giantswarm", `Auth0 tenant.`)
 }
 
 func (f *flag) Validate() error {
-	if f.Name == "" {
-		return microerror.Maskf(invalidFlagError, "--%s must not be empty", flagName)
+	if f.ID == "" {
+		return microerror.Maskf(invalidFlagError, "--%s must not be empty", flagID)
+	}
+	if f.Tenant == "" {
+		return microerror.Maskf(invalidFlagError, "--%s must not be empty", flagTenant)
 	}
 
 	return nil
