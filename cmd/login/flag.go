@@ -32,8 +32,15 @@ func (f *flag) Validate() error {
 	if f.ClientID == "" {
 		f.ClientID = os.Getenv(env.Auth0ClientID)
 	}
+	if f.ClientID == "" {
+		return microerror.Maskf(invalidFlagError, "--%s must not be empty", flagClientID)
+	}
 	if f.ClientSecret == "" {
 		f.ClientSecret = os.Getenv(env.Auth0ClientSecret)
+	}
+	if f.ClientSecret == "" {
+		return microerror.Maskf(invalidFlagError, "--%s must not be empty", flagClientSecret)
+
 	}
 	if f.Tenant == "" {
 		return microerror.Maskf(invalidFlagError, "--%s must not be empty", flagTenant)
