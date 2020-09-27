@@ -36,6 +36,10 @@ func New(config Config) (*Auth0, error) {
 	filePath := filepath.Join(key.ConfigDir(), config.Tenant)
 
 	data, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return nil, microerror.Mask(err)
+	}
+
 	var tokenConfig *TokenConfig
 
 	err = json.Unmarshal(data, &tokenConfig)
