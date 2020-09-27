@@ -132,13 +132,3 @@ func getAccessToken(clientID, clientSecret, tenant string) (*ClientCredentials, 
 
 	return clientCredentials, nil
 }
-
-func writeTokenConfigToFileSystem(tokenConfig []byte, filePath string) error {
-
-	err := ioutil.WriteFile(filePath, tokenConfig, 0600)
-	if err != nil {
-		return microerror.Mask(err)
-	}
-
-	return nil
-}
