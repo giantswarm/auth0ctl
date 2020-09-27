@@ -16,5 +16,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add CircleCI configuration.
 - Add Auth0 authorization.
 - Add `create`/`delete` commands for Auth0 resource servers.
+- Add `update` command for Auth0 clients.
 
 [Unreleased]: https://github.com/giantswarm/REPOSITORY_NAME/tree/master
