@@ -52,7 +52,7 @@ func Login(clientID, clientSecret, tenant string) error {
 		ExpiresAt: expiresAt,
 	}
 
-	data, err := json.Marshal(tokenConfig)
+	tokenConfig, err := json.Marshal(tokenConfig)
 	if err != nil {
 		return microerror.Mask(err)
 	}
