@@ -51,16 +51,12 @@ func Login(clientID, clientSecret, tenant string) error {
 		ExpiresAt: expiresAt,
 	}
 
-<<<<<<< HEAD
 	tokenConfigData, err := json.Marshal(tokenConfig)
 	if err != nil {
 		return microerror.Mask(err)
 	}
 
 	err = ioutil.WriteFile(filePath, tokenConfigData, 0600)
-=======
-	err = writeTokenConfigToFileSystem(tokenConfig, filePath)
->>>>>>> 0156201... Verify token ttl durin auth0 client setup
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -125,4 +121,3 @@ func getAccessToken(clientID, clientSecret, tenant string) (*ClientCredentials, 
 
 	return clientCredentials, nil
 }
-
