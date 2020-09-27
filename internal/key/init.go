@@ -13,7 +13,7 @@ func init() {
 	{
 		osUser, err = user.Current()
 		if err != nil {
-			panic(microerror.JSON(err))
+			panic(microerror.Pretty(err, true))
 		}
 	}
 }
