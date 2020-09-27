@@ -57,7 +57,7 @@ func Login(clientID, clientSecret, tenant string) error {
 		return microerror.Mask(err)
 	}
 
-	err = writeTokenConfigToFileSystem(data, filePath)
+	err = ioutil.WriteFile(filePath, tokenConfig, 0600)
 	if err != nil {
 		return microerror.Mask(err)
 	}
