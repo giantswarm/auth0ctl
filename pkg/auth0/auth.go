@@ -104,15 +104,7 @@ func getAccessToken(clientID, clientSecret, tenant string) (*ClientCredentials, 
 	data.Set("client_id", clientID)
 	data.Set("client_secret", clientSecret)
 
-	req, err := http.NewRequest("POST", authEndpoint, strings.NewReader(data.Encode()))
-	if err != nil {
-		return nil, microerror.Mask(err)
-	}
-
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
-
-	resp, err := httpClient.Do(req)
+	resp, err := http.Post(authEndpoint, "application/x-www-form-urlencoded", strings.NewReader(data.Encode()))
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}
