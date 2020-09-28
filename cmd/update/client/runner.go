@@ -65,15 +65,15 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	}
 	client.Callbacks = newCallbacks
 
-	newAllowedLogoutURLs := r.flag.AddAllowedLogoutURL
+	newLogoutURLs := r.flag.AddLogoutURL
 	{
-		for _, allowedLogoutURL := range client.AllowedLogoutURLs {
-			if !stringInSlice(allowedLogoutURL, r.flag.RemoveAllowedLogoutURL) {
-				newAllowedLogoutURLs = append(newAllowedLogoutURLs, allowedLogoutURL)
+		for _, allowedLogoutURL := range client.LogoutURLs {
+			if !stringInSlice(allowedLogoutURL, r.flag.RemoveLogoutURL) {
+				newLogoutURLs = append(newLogoutURLs, allowedLogoutURL)
 			}
 		}
 	}
-	client.AllowedLogoutURLs = newAllowedLogoutURLs
+	client.LogoutURLs = newLogoutURLs
 
 	newWebOrigins := r.flag.AddWebOrigin
 	{

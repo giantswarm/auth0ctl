@@ -1,9 +1,9 @@
 package auth0
 
 type Client struct {
-	Callbacks         []string `json:"callbacks"`
-	AllowedLogoutURLs []string `json:"allowed_logout_urls"`
-	WebOrigins        []string `json:"web_origins"`
+	Callbacks  []string `json:"callbacks"`
+	LogoutURLs []string `json:"allowed_logout_urls"`
+	WebOrigins []string `json:"web_origins"`
 }
 
 type ResouceServer struct {
