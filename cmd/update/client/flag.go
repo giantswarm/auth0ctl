@@ -15,7 +15,7 @@ type flag struct {
 }
 
 func (f *flag) Init(cmd *cobra.Command) {
-	cmd.Flags().StringVar(&f.Name, flagName, "", `Name of the new release. Must follow semver format.`)
+	cmd.Flags().StringVar(&f.Name, flagName, "", "New application name.")
 }
 
 func (f *flag) Validate() error {

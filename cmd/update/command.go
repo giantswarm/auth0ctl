@@ -1,4 +1,4 @@
-package create
+package update
 
 import (
 	"io"
@@ -8,12 +8,12 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	a0resourceserver "github.com/giantswarm/auth0ctl/cmd/create/resourceserver"
+	a0client "github.com/giantswarm/auth0ctl/cmd/update/client"
 )
 
 const (
-	name        = "create"
-	description = "Commands to create Auth0 resources."
+	name        = "update"
+	description = "Commands to update Auth0 resources."
 )
 
 type Config struct {
@@ -35,15 +35,15 @@ func New(config Config) (*cobra.Command, error) {
 
 	var err error
 
-	var resourceServerCmd *cobra.Command
+	var clientCmd *cobra.Command
 	{
-		c := a0resourceserver.Config{
+		c := a0client.Config{
 			Logger: config.Logger,
 			Stderr: config.Stderr,
 			Stdout: config.Stdout,
 		}
 
-		resourceServerCmd, err = a0resourceserver.New(c)
+		clientCmd, err = a0client.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -67,7 +67,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(c)
 
-	c.AddCommand(resourceServerCmd)
+	c.AddCommand(clientCmd)
 
 	return c, nil
 }

@@ -1,4 +1,4 @@
-package client
+package logout
 
 import (
 	"io"
@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	name        = "client"
-	description = "Command to create Auth0 client."
+	name        = "logout"
+	description = "Commands to logout from Auth0 tenant."
 )
 
 type Config struct {
