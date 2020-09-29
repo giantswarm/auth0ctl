@@ -57,11 +57,6 @@ func New(config Config) (*Auth0, error) {
 		return nil, microerror.Mask(err)
 	}
 
-	now, err := time.Parse(dateTimeFormat, time.Now().Format(dateTimeFormat))
-	if err != nil {
-		return nil, microerror.Mask(err)
-	}
-
 	if expiresAt.Before(now) {
 		return nil, microerror.Maskf(executionFailedError, "Access token expired. Execute `auth0ctl login` to get new token.")
 	}
