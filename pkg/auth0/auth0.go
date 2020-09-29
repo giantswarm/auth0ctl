@@ -89,8 +89,6 @@ func (a0 *Auth0) CreateResourceServer(rr *ResouceServer) (*ResouceServer, error)
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", a0.accessToken))
 	req.Header.Set("Content-Type", "application/json")
 
-	fmt.Println(string(data))
-
 	resp, err := a0.httpClient.Do(req)
 	if err != nil {
 		return nil, microerror.Mask(err)
@@ -103,6 +101,10 @@ func (a0 *Auth0) CreateResourceServer(rr *ResouceServer) (*ResouceServer, error)
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, microerror.Mask(err)
+	}
+
+	if resp.StatusCode == http.StatusConflict {
+		return nil, microerror.Mask(alreadyExistsError)
 	}
 
 	if resp.StatusCode != http.StatusCreated {
