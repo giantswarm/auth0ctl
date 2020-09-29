@@ -7,20 +7,27 @@ import (
 )
 
 const (
-	flagName = "name"
+	flagIdentifier = "identifier"
+	flagTenant     = "tenant"
 )
 
 type flag struct {
-	Name string
+	Identifier string
+	Tenant     string
 }
 
 func (f *flag) Init(cmd *cobra.Command) {
-	cmd.Flags().StringVar(&f.Name, flagName, "", `Name of the new release. Must follow semver format.`)
+	cmd.Flags().StringVar(&f.Identifier, flagIdentifier, "", `Resource server identifier.`)
+	cmd.Flags().StringVar(&f.Tenant, flagTenant, "giantswarm", `Auth0 tenant.`)
+
 }
 
 func (f *flag) Validate() error {
-	if f.Name == "" {
-		return microerror.Maskf(invalidFlagError, "--%s must not be empty", flagName)
+	if f.Identifier == "" {
+		return microerror.Maskf(invalidFlagError, "--%s must not be empty", flagIdentifier)
+	}
+	if f.Tenant == "" {
+		return microerror.Maskf(invalidFlagError, "--%s must not be empty", flagTenant)
 	}
 
 	return nil
