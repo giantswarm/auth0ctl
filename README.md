@@ -25,8 +25,10 @@ Use environment variables to configure cli:
 Required application scopes:
   - read:clients
   - read:client_keys
+  - update:client_keys
   - create:clients
   - delete:clients
+  - update:clients
   - read:resource_servers
   - create:resource_servers
   - delete:resource_servers
