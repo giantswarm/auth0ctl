@@ -2,13 +2,13 @@ package auth0
 
 import "github.com/giantswarm/microerror"
 
-var alreadyExistsError = &microerror.Error{
-	Kind: "alreadyExistsError",
+var resourceExistsError = &microerror.Error{
+	Kind: "resourceExistsError",
 }
 
-// IsAlreadyExists asserts alreadyExistsError.
-func IsAlreadyExists(err error) bool {
-	return microerror.Cause(err) == alreadyExistsError
+// IsResourceExists asserts resourceExistsError.
+func IsResourceExists(err error) bool {
+	return microerror.Cause(err) == resourceExistsError
 }
 
 var invalidConfigError = &microerror.Error{

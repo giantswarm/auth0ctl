@@ -50,16 +50,6 @@ func (r *runner) run(_ context.Context, _ *cobra.Command, _ []string) error {
 		}
 	}
 
-	resourceServerExists, err := a0.ResourceServerExists(r.flag.Identifier)
-	if err != nil {
-		return microerror.Mask(err)
-	}
-
-	if !resourceServerExists {
-		fmt.Printf("Resource server with %#q identifier doesn't exist.\n", r.flag.Identifier)
-		return nil
-	}
-
 	err = a0.DeleteResourceServer(r.flag.Identifier)
 	if err != nil {
 		return microerror.Mask(err)

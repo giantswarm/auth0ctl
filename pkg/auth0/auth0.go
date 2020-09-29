@@ -104,7 +104,7 @@ func (a0 *Auth0) CreateResourceServer(rr *ResouceServer) (*ResouceServer, error)
 	}
 
 	if resp.StatusCode == http.StatusConflict {
-		return nil, microerror.Mask(alreadyExistsError)
+		return nil, microerror.Mask(resourceExistsError)
 	}
 
 	if resp.StatusCode != http.StatusCreated {
@@ -141,26 +141,4 @@ func (a0 *Auth0) DeleteResourceServer(identifier string) error {
 
 	return nil
 
-}
-
-func (a0 *Auth0) ResourceServerExists(identifier string) (bool, error) {
-	endpoint := fmt.Sprintf("%sresource-servers/%s", a0.audience, url.QueryEscape(identifier))
-
-	req, err := http.NewRequest(http.MethodGet, endpoint, nil)
-	if err != nil {
-		return false, microerror.Mask(err)
-	}
-
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", a0.accessToken))
-
-	resp, err := a0.httpClient.Do(req)
-	if err != nil {
-		return false, microerror.Mask(err)
-	}
-
-	if resp.StatusCode == 200 {
-		return true, nil
-	}
-
-	return false, nil
 }

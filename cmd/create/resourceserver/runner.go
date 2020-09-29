@@ -50,16 +50,6 @@ func (r *runner) run(_ context.Context, _ *cobra.Command, _ []string) error {
 		}
 	}
 
-	resourceServerExists, err := a0.ResourceServerExists(r.flag.Identifier)
-	if err != nil {
-		return microerror.Mask(err)
-	}
-
-	if resourceServerExists {
-		fmt.Printf("Resource server with %#q identifier already exists.\n", r.flag.Identifier)
-		return nil
-	}
-
 	resourceServer := &auth0.ResouceServer{
 		Name:               r.flag.Name,
 		Identifier:         r.flag.Identifier,
@@ -70,6 +60,10 @@ func (r *runner) run(_ context.Context, _ *cobra.Command, _ []string) error {
 	}
 
 	_, err = a0.CreateResourceServer(resourceServer)
+	if auth0.IsResourceExists(err) {
+		fmt.Printf("Resource server with %#q identifier already exists.\n", r.flag.Identifier)
+		return nil
+	}
 	if err != nil {
 		return microerror.Mask(err)
 	}
