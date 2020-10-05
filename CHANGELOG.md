@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2020-10-05
+
 ### Fixed
 
 - Do not duplicate resources on update request.
@@ -24,5 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `create`/`delete` commands for Auth0 resource servers.
 - Add `update` command for Auth0 clients.
 
-[Unreleased]: https://github.com/giantswarm/auth0ctl/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/giantswarm/auth0ctl/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/giantswarm/auth0ctl/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/giantswarm/auth0ctl/releases/tag/v0.1.0
