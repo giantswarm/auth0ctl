@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Do not duplicate resources on update request.
+
 ## [0.1.0] - 2020-09-30
 
 ### Added
