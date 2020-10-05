@@ -58,7 +58,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	newCallbacks := r.flag.AddCallback
 	{
 		for _, callback := range client.Callbacks {
-			if !stringInSlice(callback, r.flag.RemoveCallback) {
+			if !stringInSlice(callback, r.flag.RemoveCallback) && !stringInSlice(callback, newCallbacks) {
 				newCallbacks = append(newCallbacks, callback)
 			}
 		}
@@ -68,7 +68,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	newLogoutURLs := r.flag.AddLogoutURL
 	{
 		for _, allowedLogoutURL := range client.LogoutURLs {
-			if !stringInSlice(allowedLogoutURL, r.flag.RemoveLogoutURL) {
+			if !stringInSlice(allowedLogoutURL, r.flag.RemoveLogoutURL) && !stringInSlice(allowedLogoutURL, newLogoutURLs) {
 				newLogoutURLs = append(newLogoutURLs, allowedLogoutURL)
 			}
 		}
@@ -78,7 +78,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	newWebOrigins := r.flag.AddWebOrigin
 	{
 		for _, webOrigin := range client.WebOrigins {
-			if !stringInSlice(webOrigin, r.flag.RemoveWebOrigin) {
+			if !stringInSlice(webOrigin, r.flag.RemoveWebOrigin) && !stringInSlice(webOrigin, newWebOrigins) {
 				newWebOrigins = append(newWebOrigins, webOrigin)
 			}
 		}
