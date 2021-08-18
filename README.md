@@ -6,12 +6,8 @@ Command line client for Auth0.
 
 ## Installation
 
-This project uses Go modules. Be sure to have it outside your `$GOPATH` or
-set `GO111MODULE=on` environment variable. Then regular `go install` should do
-the trick. Alternatively the following one-liner may help.
-
 ```sh
-GO111MODULE=on go install -ldflags "-X 'github.com/giantswarm/auth0ctl/pkg/project.gitSHA=$(git rev-parse HEAD)'" .
+make install
 ```
 
 ## Configuration
