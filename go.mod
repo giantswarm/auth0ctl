@@ -7,3 +7,5 @@ require (
 	github.com/giantswarm/micrologger v0.5.0
 	github.com/spf13/cobra v1.2.1
 )
+
+replace github.com/dgrijalva/jwt-go => github.com/golang-jwt/jwt/v4 v4.0.0
