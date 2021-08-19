@@ -8,4 +8,7 @@ require (
 	github.com/spf13/cobra v1.2.1
 )
 
-replace github.com/dgrijalva/jwt-go => github.com/golang-jwt/jwt/v4 v4.0.0
+replace (
+	github.com/dgrijalva/jwt-go => github.com/golang-jwt/jwt/v4 v4.0.0
+	github.com/gorilla/websocket => github.com/gorilla/websocket v1.4.2
+)
