@@ -1,6 +1,6 @@
 module github.com/giantswarm/auth0ctl
 
-go 1.18
+go 1.19
 
 require (
 	github.com/giantswarm/microerror v0.4.0
