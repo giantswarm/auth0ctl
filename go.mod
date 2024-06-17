@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/giantswarm/microerror v0.4.1
 	github.com/giantswarm/micrologger v1.1.1
-	github.com/spf13/cobra v1.8.0
+	github.com/spf13/cobra v1.8.1
 )
 
 require (
